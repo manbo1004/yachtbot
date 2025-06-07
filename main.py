@@ -40,18 +40,18 @@ async def 출석(ctx):
     uid = str(ctx.author.id)
     today = get_today_kst()
     if uid in 출석_기록 and 출석_기록[uid] == str(today):
-        await ctx.send("이미 출석하셨습니다! 내일 다시 와주세요.")
+        await ctx.send(f"{ctx.author.mention} 이미 출석하셨습니다! 내일 다시 와주세요.")
         return
     user_data[uid] = user_data.get(uid, 0) + 100
     출석_기록[uid] = str(today)
     save_data()
-    await ctx.send(f"{ctx.author.display_name}님 출석 완료! +100P")
+    await ctx.send(f"{ctx.author.mention}님 출석 완료! +100P")
 
 @bot.command()
 async def 포인트(ctx):
     uid = str(ctx.author.id)
     points = user_data.get(uid, 0)
-    await ctx.send(f"{ctx.author.display_name}님의 보유 포인트: {points}P")
+    await ctx.send(f"{ctx.author.mention}님의 보유 포인트: {points}P")
 
 @bot.command()
 async def 랭킹(ctx):
@@ -73,13 +73,13 @@ async def 지급(ctx, member: discord.Member, amount: int):
     uid = str(member.id)
     user_data[uid] = user_data.get(uid, 0) + amount
     save_data()
-    await ctx.send(f"{member.display_name}님께 {amount}포인트 지급 완료!")
+    await ctx.send(f"{member.mention}님께 {amount}포인트 지급 완료!")
 
 @bot.command()
 async def 슬롯(ctx, 금액: int):
     uid = str(ctx.author.id)
     if user_data.get(uid, 0) < 금액 or 금액 <= 0:
-        await ctx.send("포인트가 부족하거나 잘못된 금액입니다.")
+        await ctx.send(f"{ctx.author.mention} 포인트가 부족하거나 잘못된 금액입니다.")
         return
     그림 = ["🍒", "🍋", "🍉", "⭐", "💎"]
     결과 = [random.choice(그림) for _ in range(3)]
@@ -96,13 +96,13 @@ async def 슬롯(ctx, 금액: int):
         user_data[uid] -= 금액
         결과메시지 = f"실패... -{금액}P"
     save_data()
-    await ctx.send(f"{메시지}\n{ctx.author.display_name}님 {결과메시지}")
+    await ctx.send(f"{메시지}\n{ctx.author.mention}님 {결과메시지}")
 
 @bot.command()
 async def 주사위(ctx, 금액: int):
     uid = str(ctx.author.id)
     if user_data.get(uid, 0) < 금액 or 금액 <= 0:
-        await ctx.send("포인트가 부족하거나 잘못된 금액입니다.")
+        await ctx.send(f"{ctx.author.mention} 포인트가 부족하거나 잘못된 금액입니다.")
         return
     유저눈 = random.randint(1, 6)
     봇눈 = random.randint(1, 6)
@@ -115,7 +115,7 @@ async def 주사위(ctx, 금액: int):
     else:
         결과 = "🤝 무승부! 포인트 변화 없음."
     save_data()
-    await ctx.send(f"🎲 {ctx.author.display_name}의 주사위: {유저눈} vs 봇: {봇눈}\n{결과}")
+    await ctx.send(f"🎲 {ctx.author.mention}의 주사위: {유저눈} vs 봇: {봇눈}\n{결과}")
 
 @bot.command()
 async def 홀짝(ctx, 선택: str, 금액: int):
@@ -131,7 +131,7 @@ async def 홀짝(ctx, 선택: str, 금액: int):
         user_data[uid] -= 금액
         메시지 = f"틀렸습니다. -{금액}P"
     save_data()
-    await ctx.send(f"🌓 결과: {결과}\n{ctx.author.display_name}님 {메시지}")
+    await ctx.send(f"🌓 결과: {결과}\n{ctx.author.mention}님 {메시지}")
 
 @bot.command()
 async def 경마(ctx, 말번호: int, 금액: int):
@@ -140,17 +140,17 @@ async def 경마(ctx, 말번호: int, 금액: int):
         await ctx.send("형식: !경마 3 100 (1~4번 말 중 하나 선택)")
         return
     if user_data.get(uid, 0) < 금액:
-        await ctx.send("포인트가 부족합니다.")
+        await ctx.send(f"{ctx.author.mention} 포인트가 부족합니다.")
         return
     승자 = random.randint(1, 4)
     결과메시지 = f"🏁 결승선 도착: 🐎{승자}번"
     if 말번호 == 승자:
         보상 = 금액 * 3
         user_data[uid] += 보상
-        결과메시지 += f"\n{ctx.author.display_name}님 {말번호}번말 적중! +{보상}P"
+        결과메시지 += f"\n{ctx.author.mention}님 {말번호}번말 적중! +{보상}P"
     else:
         user_data[uid] -= 금액
-        결과메시지 += f"\n{ctx.author.display_name}님 {말번호}번말 실패... -{금액}P"
+        결과메시지 += f"\n{ctx.author.mention}님 {말번호}번말 실패... -{금액}P"
     save_data()
     await ctx.send(결과메시지)
 
