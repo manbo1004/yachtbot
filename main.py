@@ -152,4 +152,5 @@ async def on_ready():
     print("✅ 요트봇 봇이 정상 작동 중입니다.")
 
 # 환경 변수나 토큰 설정은 여기서
-bot.run("YOUR_DISCORD_BOT_TOKEN")
+import os
+bot.run(os.getenv("TOKEN"))
