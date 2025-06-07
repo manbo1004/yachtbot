@@ -68,8 +68,8 @@ async def 랭킹(ctx):
         name = member.display_name if member else f"알 수 없음 ({uid})"
         result.append(f"{name}: {point}P")
 
-    await ctx.send("🏆 포인트 랭킹 TOP 5 🏆
-" + "\n".join(result))
+message = "🏆 포인트 랭킹 TOP 5 🏆\n" + "\n".join(result)
+await ctx.send(message)
 
 @bot.command()
 @commands.is_owner()
